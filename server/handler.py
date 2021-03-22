@@ -1,5 +1,6 @@
 from tools.request import Request
 from constants import const
+from tools.response import Response
 
 
 class MyHandler:
@@ -16,3 +17,6 @@ class MyHandler:
 
         if not request.is_ok:
             return
+
+        response = Response()
+        sock.sendall(response.encode())

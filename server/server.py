@@ -40,7 +40,7 @@ class Server:
                         logging.error('Error in connection')
 
                     conn.close()
-                    print('connection closed ' + address)
+                    print('connection closed ' + str(address[1]))
             else:
                 self.workers.append(pid)
 
