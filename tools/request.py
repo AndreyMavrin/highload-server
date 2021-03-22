@@ -4,6 +4,7 @@ class Request:
 
         self.method = None
         self.is_ok = False
+        self.path = None
 
         self.headers = {}
 
@@ -18,7 +19,7 @@ class Request:
         if len(headers) == 0:
             return
 
-        self.method, _, _ = headers[0].split()
+        self.method, self.path, _ = headers[0].split()
 
         for header in headers[1:]:
             if len(header.split(': ')) == 2:
@@ -26,3 +27,5 @@ class Request:
                 self.headers[key] = value
 
         self.is_ok = True
+
+
