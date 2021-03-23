@@ -1,4 +1,5 @@
 from constants import const
+from time import strftime
 
 
 class Response:
@@ -15,6 +16,8 @@ class Response:
             self.content_length = len(self.body)
         self.headers = f"HTTP/1.1 {self.status}\r\n" + \
                        f"Server: {const.SERVER_NAME}\r\n" + \
+                       f"Date: {strftime('%c')}\r\n" + \
+                       f"Connection: keep-alive\r\n" + \
                        f"Content-Length: {self.content_length}\r\n" + \
                        f"Content-Type: {self.content_type}\r\n\r\n"
 
