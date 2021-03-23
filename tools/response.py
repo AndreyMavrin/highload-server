@@ -34,8 +34,8 @@ class ResponseOK(Response):
 
         if method != 'HEAD':
             self.body = body
-        self.generate_headers()
         self.content_length = len(body)
+        self.generate_headers()
 
 
 class ResponseBadResponse(Response):

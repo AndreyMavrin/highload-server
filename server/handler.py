@@ -1,7 +1,8 @@
 from tools.request import Request
 from constants import const
-from tools.response import ResponseOK, ResponseBadResponse, ResponseNotFound,  ResponseNotAllowed
+from tools.response import ResponseOK, ResponseBadResponse, ResponseForbidden, ResponseNotFound,  ResponseNotAllowed
 import os
+from urllib.parse import unquote
 
 
 class MyHandler:
@@ -26,11 +27,17 @@ class MyHandler:
             sock.sendall(ResponseBadResponse().encode())
             return
 
-        request.path = "/home/andrey/highload/highload-server" + request.path
-        print(request.path)
+        if '/../' in request.path:
+            sock.sendall(ResponseForbidden().encode())
+            return
+
+        request.path = unquote(request.path.split('?')[0])
+
+        request.path = os.getcwd() + request.path
         if os.path.isdir(request.path):
             request.path += 'index.html'
-            print(request.path)
+            if not os.path.isfile(request.path):
+                sock.sendall(ResponseForbidden().encode())
 
         try:
             body = self.read_file(request.path)
@@ -39,6 +46,4 @@ class MyHandler:
             return
 
         response = ResponseOK(body, request.method)
-        print(response.headers)
-        print(len(response.body))
         sock.sendall(response.encode())
