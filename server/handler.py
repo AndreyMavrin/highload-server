@@ -45,5 +45,5 @@ class MyHandler:
             sock.sendall(ResponseNotFound().encode())
             return
 
-        response = ResponseOK(body, request.method)
+        response = ResponseOK(body, request.path, request.method)
         sock.sendall(response.encode())

@@ -15,7 +15,8 @@ class Response:
             self.content_length = len(self.body)
         self.headers = f"HTTP/1.1 {self.status}\r\n" + \
                        f"Server: {const.SERVER_NAME}\r\n" + \
-                       f"Content-Length: {self.content_length}\r\n\r\n"
+                       f"Content-Length: {self.content_length}\r\n" + \
+                       f"Content-Type: {self.content_type}\r\n\r\n"
 
     def encode(self):
         if self.body is not None:
@@ -29,12 +30,25 @@ class Response:
 class ResponseOK(Response):
     status = '200 OK'
 
-    def __init__(self, body, method):
+    def __init__(self, body, path, method):
         super().__init__()
+
+        extension = path.split('.')[len(path.split('.')) - 1]
 
         if method != 'HEAD':
             self.body = body
         self.content_length = len(body)
+
+        self.content_type = {
+            'html': 'text/html',
+            'css': 'text/css',
+            'js': 'text/javascript',
+            'jpg': 'image/jpeg',
+            'jpeg': 'image/jpeg',
+            'png': 'image/png',
+            'gif': 'image/gif',
+            'swf': 'application/x-shockwave-flash'
+        }.get(extension)
         self.generate_headers()
 
 
