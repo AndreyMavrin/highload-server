@@ -42,6 +42,8 @@ class Server:
 
                     conn.close()
                     print('connection closed ' + str(address[1]))
+            elif pid == -1:
+                print('Error in fork')
             else:
                 self.workers.append(pid)
 
